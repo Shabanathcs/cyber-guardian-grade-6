@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cyber Guardian Mission</title>
+<meta name="description" content="Cyber awareness lesson for Grade 6 – scenarios, activities and a Cyber Guardian pledge.">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b1630;--panel:#13244d;--panel2:#1b3166;--line:#2b4585;
+  --ink:#eef4ff;--muted:#a9b8d9;--teal:#2de2c4;--yellow:#ffd23f;
+  --red:#ff5c7a;--green:#4ade80;--orange:#ffa94d;--purple:#a78bfa;
+  --radius:18px;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:radial-gradient(circle at 15% 10%,#1c3a7a 0,transparent 40%),
+             radial-gradient(circle at 85% 90%,#14315f 0,transparent 45%),var(--bg);
+  color:var(--ink);font-family:'Fredoka',system-ui,-apple-system,Segoe UI,sans-serif;
+  font-size:18px;line-height:1.5;min-height:100vh;
+}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+header{
+  position:sticky;top:0;z-index:20;background:rgba(11,22,48,.92);backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line);
+}
+.topbar{max-width:1100px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:12px;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.25rem}
+.brand .logo{font-size:1.8rem}
+.points{background:var(--yellow);color:#1b1b1b;font-weight:700;padding:6px 14px;border-radius:999px;white-space:nowrap}
+.points.bump{animation:bump .4s}
+@keyframes bump{50%{transform:scale(1.25)}}
+nav{max-width:1100px;margin:0 auto;padding:0 16px 10px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav button{
+  flex:0 0 auto;background:var(--panel);color:var(--muted);border:1px solid var(--line);
+  padding:6px 14px;border-radius:999px;font-size:.95rem
+}
+nav button.active{background:var(--teal);color:#062a26;border-color:var(--teal);font-weight:600}
+nav button.done:not(.active){color:var(--green);border-color:var(--green)}
+.progress{height:5px;background:var(--panel)}
+.progress div{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--yellow));transition:width .4s}
+
+main{max-width:1100px;margin:0 auto;padding:20px 16px 110px}
+.screen{display:none;animation:fade .35s}
+.screen.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+h1{font-size:clamp(1.8rem,5vw,2.8rem);margin:.2em 0;line-height:1.15}
+h2{font-size:clamp(1.5rem,4vw,2.1rem);margin:.2em 0 .3em}
+h3{margin:.2em 0}
+.lead{color:var(--muted);font-size:1.1rem;margin-top:0}
+.tag{display:inline-block;background:var(--panel2);color:var(--teal);border:1px solid var(--line);padding:3px 12px;border-radius:999px;font-size:.85rem;font-weight:600;letter-spacing:.5px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin:16px 0}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.btn{background:var(--teal);color:#062a26;border:none;padding:12px 22px;border-radius:14px;font-weight:600}
+.btn:hover{filter:brightness(1.1)}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--line)}
+.btn.yellow{background:var(--yellow);color:#222}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* Briefing */
+.hero{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;align-items:center}
+.hero-art{font-size:clamp(4rem,14vw,8rem);text-align:center;filter:drop-shadow(0 0 30px rgba(45,226,196,.4))}
+.hand{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.hand button{background:var(--panel);border:1px solid var(--line);color:var(--ink);border-radius:12px;padding:6px 12px;white-space:nowrap}
+.hand .count{color:var(--yellow);font-weight:700;min-width:2ch;display:inline-block;text-align:center}
+.sbst{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.sbst div{border-radius:16px;padding:16px;text-align:center;font-weight:600;color:#111}
+.sbst span{display:block;font-size:2rem}
+.sbst small{display:block;font-weight:400;font-size:.9rem}
+
+/* Threat cards */
+.tcard{
+  background:var(--panel2);border:2px solid var(--line);border-radius:var(--radius);
+  padding:18px;min-height:220px;text-align:left;color:var(--ink);transition:transform .2s,border-color .2s;width:100%
+}
+.tcard:hover{transform:translateY(-3px);border-color:var(--teal)}
+.tcard .ico{font-size:2.6rem}
+.tcard .front h3{font-size:1.3rem}
+.tcard .front p{color:var(--muted);margin:.3em 0 0}
+.tcard .back{display:none;font-size:.98rem}
+.tcard.open{border-color:var(--yellow);background:#22396f}
+.tcard.open .front{display:none}
+.tcard.open .back{display:block;animation:fade .3s}
+.back b{color:var(--yellow)}
+.back .shield{color:var(--green)}
+.tapme{font-size:.8rem;color:var(--teal);margin-top:8px;display:block}
+
+/* Phish */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.msgbox{background:#f6f8fc;color:#1d2433;border-radius:16px;padding:20px;cursor:pointer;font-size:1.05rem;user-select:none}
+.msgbox .meta{border-bottom:1px solid #d6dbe6;padding-bottom:10px;margin-bottom:12px;font-size:.95rem}
+.msgbox .meta b{color:#555}
+.chat{background:#e9efe4;display:flex;flex-direction:column;gap:10px}
+.bubble{background:#fff;border-radius:4px 16px 16px 16px;padding:10px 14px;max-width:90%;box-shadow:0 1px 2px rgba(0,0,0,.1)}
+.chathead{font-weight:600;color:#333;font-size:.95rem}
+.flag{border-radius:6px;padding:0 2px;transition:background .2s}
+.flag.found{background:#ffd23f;outline:2px solid #ff5c7a;color:#111}
+.foundlist{list-style:none;padding:0;margin:0}
+.foundlist li{background:var(--panel2);border-left:5px solid var(--red);padding:10px 12px;border-radius:10px;margin-bottom:8px;animation:fade .3s}
+.counter{font-size:1.2rem;font-weight:700;color:var(--yellow)}
+
+/* Password lab */
+.pwin{width:100%;padding:14px 16px;font-size:1.3rem;border-radius:14px;border:2px solid var(--line);background:#0e1b3d;color:var(--ink);font-family:monospace}
+.meter{height:18px;background:#0e1b3d;border-radius:999px;overflow:hidden;margin:12px 0;border:1px solid var(--line)}
+.meter div{height:100%;width:0;transition:width .3s,background .3s}
+.checks{list-style:none;padding:0;margin:0;display:grid;gap:6px}
+.checks li::before{content:"❌ "}
+.checks li.ok::before{content:"✅ "}
+.checks li.ok{color:var(--green)}
+.crack{font-size:1.3rem;font-weight:700}
+.pass-out{font-family:monospace;font-size:1.4rem;background:#0e1b3d;border:2px dashed var(--teal);border-radius:14px;padding:14px;text-align:center;margin:10px 0;word-break:break-all}
+.warn{background:rgba(255,92,122,.15);border:1px solid var(--red);border-radius:12px;padding:10px 14px;font-size:.95rem}
+
+/* Quiz */
+.qhead{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:center}
+.qbar{height:10px;background:#0e1b3d;border-radius:999px;overflow:hidden;margin:10px 0 16px}
+.qbar div{height:100%;background:var(--purple);transition:width .4s}
+.scene{font-size:1.25rem;background:var(--panel2);border-radius:16px;padding:18px;border-left:6px solid var(--purple)}
+.scene .emo{font-size:2.4rem;float:left;margin-right:12px;line-height:1}
+.opts{display:grid;gap:10px;margin-top:14px}
+.opt{text-align:left;background:var(--panel2);color:var(--ink);border:2px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start}
+.opt:hover:not(:disabled){border-color:var(--teal)}
+.opt .letter{background:var(--line);border-radius:8px;min-width:32px;height:32px;display:grid;place-items:center;font-weight:700}
+.opt.best{border-color:var(--green);background:rgba(74,222,128,.15)}
+.opt.okay{border-color:var(--orange);background:rgba(255,169,77,.15)}
+.opt.bad{border-color:var(--red);background:rgba(255,92,122,.15)}
+.opt:disabled{cursor:default}
+.feedback{margin-top:14px;padding:16px;border-radius:14px;display:none;animation:fade .3s}
+.feedback.show{display:block}
+.feedback.best{background:rgba(74,222,128,.15);border:1px solid var(--green)}
+.feedback.okay{background:rgba(255,169,77,.15);border:1px solid var(--orange)}
+.feedback.bad{background:rgba(255,92,122,.15);border:1px solid var(--red)}
+.result{text-align:center}
+.result .big{font-size:4rem}
+
+/* Share or shield */
+.sitem{font-size:clamp(1.4rem,4vw,2rem);text-align:center;background:var(--panel2);border-radius:20px;padding:30px 18px;border:2px dashed var(--line);margin:14px 0}
+.sitem .ico{font-size:3rem;display:block}
+.sbtns{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sbtns button{padding:18px;border-radius:16px;border:none;font-weight:700;font-size:1.15rem}
+.sharebtn{background:var(--green);color:#063}
+.shieldbtn{background:var(--red);color:#fff}
+.bins{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.bin{background:var(--panel2);border-radius:14px;padding:12px;min-height:80px}
+.bin h4{margin:0 0 6px}
+.chipx{display:inline-block;background:var(--panel);border:1px solid var(--line);padding:3px 10px;border-radius:999px;margin:3px;font-size:.9rem}
+
+/* Think */
+.think{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.think div{background:var(--panel2);border-radius:14px;padding:14px;text-align:center;border-top:5px solid var(--teal)}
+.think b{font-size:2rem;color:var(--teal);display:block}
+
+/* Pledge */
+.pledge label{display:flex;gap:12px;align-items:flex-start;background:var(--panel2);padding:12px 14px;border-radius:12px;margin-bottom:8px;cursor:pointer;border:2px solid transparent}
+.pledge input{width:24px;height:24px;accent-color:var(--teal);flex:0 0 auto;margin-top:2px}
+.pledge label:has(input:checked){border-color:var(--teal)}
+.namein{width:100%;padding:12px 14px;font-size:1.15rem;border-radius:12px;border:2px solid var(--line);background:#0e1b3d;color:var(--ink);font-family:inherit}
+#badge{display:none;margin:20px auto;max-width:560px;text-align:center;background:linear-gradient(145deg,#1b3166,#0f2350);border:4px solid var(--yellow);border-radius:24px;padding:28px 20px;box-shadow:0 0 40px rgba(255,210,63,.35)}
+#badge.show{display:block;animation:pop .5s}
+@keyframes pop{0%{transform:scale(.6);opacity:0}80%{transform:scale(1.05)}100%{transform:scale(1);opacity:1}}
+#badge .medal{font-size:5rem}
+#badge .nm{font-size:2rem;font-weight:700;color:var(--yellow)}
+
+.bottomnav{position:fixed;bottom:0;left:0;right:0;background:rgba(11,22,48,.95);border-top:1px solid var(--line);padding:10px 16px;z-index:20}
+.bottomnav .in{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.stepname{color:var(--muted);font-size:.95rem;text-align:center}
+.toast{position:fixed;top:90px;left:50%;transform:translateX(-50%);background:var(--yellow);color:#222;font-weight:700;padding:8px 18px;border-radius:999px;z-index:50;display:none}
+.toast.show{display:block;animation:fade .3s}
+
+@media (max-width:700px){
+  body{font-size:16px}
+  .hero{grid-template-columns:1fr}
+  .hero-art{order:-1}
+  .brand .txt{font-size:1rem}
+}
+@media print{
+  body *{visibility:hidden}
+  #badge,#badge *{visibility:visible}
+  #badge{position:absolute;left:0;right:0;top:20px;box-shadow:none;background:#fff;color:#000}
+  #badge .nm{color:#000}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="topbar">
+    <div class="brand"><span class="logo">🛡️</span><span class="txt">Cyber Guardian Mission</span></div>
+    <div class="points" id="points">⭐ 0 Shield Points</div>
+  </div>
+  <nav id="nav"></nav>
+  <div class="progress"><div id="progbar"></div></div>
+</header>
+
+<div class="toast" id="toast"></div>
+
+<main>
+
+<!-- 1. BRIEFING -->
+<section class="screen" id="s-brief" data-name="Mission Briefing">
+  <div class="hero">
+    <div>
+      <span class="tag">MISSION 01 · GRADE 6</span>
+      <h1>Welcome, Cyber Agents! 🕶️</h1>
+      <p class="lead">The internet is amazing — games, videos, chats, learning. But tricksters, scammers and fake accounts are online too. Today you train to become a <b style="color:var(--yellow)">Cyber Guardian</b> who can spot danger and protect yourself and your friends.</p>
+      <p>Complete each mission, earn <b style="color:var(--yellow)">⭐ Shield Points</b>, and unlock your Cyber Guardian badge at the end!</p>
+    </div>
+    <div class="hero-art">🧑‍💻🛡️</div>
+  </div>
+
+  <div class="panel">
+    <h2>✋ Raise Your Hand If…</h2>
+    <p class="lead">Teacher taps “+1” for every hand that goes up.</p>
+    <div class="grid g2" id="hands"></div>
+  </div>
+
+  <div class="panel">
+    <h2>🚦 Your Secret Weapon: S.B.S.T.</h2>
+    <p class="lead">Whenever something online feels wrong, scary or weird — do this:</p>
+    <div class="sbst">
+      <div style="background:var(--red);color:#fff"><span>✋</span>STOP<small>Don't reply, click or pay</small></div>
+      <div style="background:var(--orange)"><span>🚫</span>BLOCK<small>Block &amp; report the account</small></div>
+      <div style="background:var(--yellow)"><span>📸</span>SCREENSHOT<small>Save the proof</small></div>
+      <div style="background:var(--green)"><span>🗣️</span>TELL<small>A parent, teacher or trusted adult</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. THREAT RADAR -->
+<section class="screen" id="s-threats" data-name="Threat Radar">
+  <span class="tag">MISSION 02</span>
+  <h2>📡 Threat Radar: What's Happening Online Today</h2>
+  <p class="lead">These are real tricks being used on kids your age right now. Tap each card to reveal how it works and how to defend yourself. (+2 ⭐ each)</p>
+  <p class="counter" id="tcount">Threats explored: 0 / 9</p>
+  <div class="grid g3" id="threats"></div>
+</section>
+
+<!-- 3. SPOT THE PHISH -->
+<section class="screen" id="s-phish" data-name="Spot the Phish">
+  <span class="tag">MISSION 03</span>
+  <h2>🎣 Spot the Phish!</h2>
+  <p class="lead">These messages are fake. Become a detective — tap on the parts of the message that look suspicious. Each red flag you find = +5 ⭐</p>
+  <div class="tabs">
+    <button class="btn" id="tab1" onclick="showPhish(0)">📧 Case 1: The Prize Email</button>
+    <button class="btn ghost" id="tab2" onclick="showPhish(1)">💬 Case 2: The “Cousin” Chat</button>
+  </div>
+  <div class="grid g2">
+    <div id="phishBox"></div>
+    <div class="panel" style="margin:0">
+      <p class="counter" id="flagCount"></p>
+      <ul class="foundlist" id="foundList"></ul>
+      <button class="btn ghost" onclick="revealAll()">🔍 Reveal all flags</button>
+    </div>
+  </div>
+</section>
+
+<!-- 4. PASSWORD LAB -->
+<section class="screen" id="s-pass" data-name="Password Lab">
+  <span class="tag">MISSION 04</span>
+  <h2>🔐 Password Power Lab</h2>
+  <p class="lead">How long would a hacker's computer take to crack a password? Try some and see!</p>
+  <div class="warn">⚠️ <b>Never type your REAL password here</b> (or anywhere a stranger shows you). Use made-up practice passwords only.</div>
+  <div class="grid g2" style="margin-top:14px">
+    <div class="panel" style="margin:0">
+      <h3>🧪 Test a practice password</h3>
+      <p style="color:var(--muted);margin:.2em 0 .6em">Try: <code>ahmed123</code> → then <code>Ahmed123!</code> → then <code>Purple-Tiger-Eats-42-Mangoes!</code></p>
+      <input class="pwin" id="pw" placeholder="Type a practice password…" autocomplete="off" spellcheck="false">
+      <div class="meter"><div id="meterbar"></div></div>
+      <p>Hacker crack time: <span class="crack" id="crack">—</span></p>
+      <ul class="checks" id="checks">
+        <li data-k="len">At least 12 characters</li>
+        <li data-k="up">Has a CAPITAL letter</li>
+        <li data-k="low">Has a small letter</li>
+        <li data-k="num">Has a number</li>
+        <li data-k="sym">Has a symbol ( ! @ # - _ )</li>
+        <li data-k="common">Not a common password or easy pattern</li>
+      </ul>
+    </div>
+    <div class="panel" style="margin:0">
+      <h3>🎲 Passphrase Generator</h3>
+      <p style="color:var(--muted)">Pro trick: join random funny words into a sentence. Long + silly = strong AND easy to remember!</p>
+      <div class="pass-out" id="phrase">Click the button!</div>
+      <button class="btn yellow" onclick="makePhrase()">✨ Make a passphrase</button>
+      <h3 style="margin-top:18px">🧠 Password Golden Rules</h3>
+      <ul>
+        <li>Never share passwords with friends — only your parents.</li>
+        <li>Use a different password for each account.</li>
+        <li>No names, birthdays, pet names or <code>123456</code>.</li>
+        <li>Turn on <b>2-step verification</b> (a code sent to a parent's phone).</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 5. WHAT WOULD YOU DO -->
+<section class="screen" id="s-quiz" data-name="What Would You Do?">
+  <span class="tag">MISSION 05</span>
+  <h2>🤔 What Would You Do?</h2>
+  <p class="lead">Real-life situations. Choose the action YOU would take. Discuss with your class before choosing!</p>
+  <div class="panel" id="quizBox"></div>
+</section>
+
+<!-- 6. SHARE OR SHIELD -->
+<section class="screen" id="s-share" data-name="Share or Shield">
+  <span class="tag">MISSION 06</span>
+  <h2>🛡️ Share it or Shield it?</h2>
+  <p class="lead">Is this information safe to share online with people you don't know in real life? Decide fast! (+3 ⭐ for each correct answer)</p>
+  <div class="panel" id="shareBox"></div>
+  <div class="panel">
+    <h2>✍️ Before You Post — T.H.I.N.K.</h2>
+    <p class="lead">Everything you post leaves a <b>digital footprint</b> 👣 that can stay forever — even if you delete it, someone may have screenshotted it.</p>
+    <div class="think">
+      <div><b>T</b>Is it <b style="font-size:1rem;display:inline">True</b>?</div>
+      <div><b>H</b>Is it <b style="font-size:1rem;display:inline">Helpful</b>?</div>
+      <div><b>I</b>Is it <b style="font-size:1rem;display:inline">Inspiring</b>?</div>
+      <div><b>N</b>Is it <b style="font-size:1rem;display:inline">Necessary</b>?</div>
+      <div><b>K</b>Is it <b style="font-size:1rem;display:inline">Kind</b>?</div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. PLEDGE -->
+<section class="screen" id="s-pledge" data-name="Guardian Pledge">
+  <span class="tag">FINAL MISSION</span>
+  <h2>🏅 The Cyber Guardian Pledge</h2>
+  <p class="lead">Tick every promise you make, type your name, and unlock your badge!</p>
+  <div class="panel pledge" id="pledgeList"></div>
+  <div class="panel">
+    <label for="gname"><b>Agent name:</b></label>
+    <input class="namein" id="gname" placeholder="Type your first name" maxlength="30">
+    <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn yellow" onclick="makeBadge()">🏅 Unlock my badge</button>
+    </div>
+    <p id="pledgeMsg" style="color:var(--red)"></p>
+  </div>
+  <div id="badge">
+    <div class="medal">🛡️</div>
+    <div style="letter-spacing:3px;color:var(--teal);font-weight:600">CERTIFIED</div>
+    <h1 style="margin:.1em 0">Cyber Guardian</h1>
+    <div class="nm" id="bname"></div>
+    <p id="binfo" style="color:var(--muted)"></p>
+    <p>Remember: <b>STOP · BLOCK · SCREENSHOT · TELL</b></p>
+    <button class="btn ghost" onclick="window.print()">🖨️ Print badge</button>
+  </div>
+</section>
+
+</main>
+
+<div class="bottomnav">
+  <div class="in">
+    <button class="btn ghost" id="prevBtn" onclick="go(cur-1)">⬅ Back</button>
+    <div class="stepname" id="stepname"></div>
+    <button class="btn" id="nextBtn" onclick="go(cur+1)">Next ➡</button>
+  </div>
+</div>
+
+<script>
+/* ---------- core ---------- */
+let pts = 0, cur = 0;
+const screens = [...document.querySelectorAll('.screen')];
+const visited = new Set();
+function addPts(n, msg){
+  pts += n;
+  const p = document.getElementById('points');
+  p.textContent = '⭐ ' + pts + ' Shield Points';
+  p.classList.remove('bump'); void p.offsetWidth; p.classList.add('bump');
+  if(msg) toast(msg);
+}
+function toast(t){
+  const el = document.getElementById('toast');
+  el.textContent = t; el.classList.add('show');
+  clearTimeout(el._t); el._t = setTimeout(()=>el.classList.remove('show'),1400);
+}
+const nav = document.getElementById('nav');
+screens.forEach((s,i)=>{
+  const b = document.createElement('button');
+  b.textContent = (i+1) + '. ' + s.dataset.name;
+  b.onclick = ()=>go(i);
+  nav.appendChild(b);
+});
+function go(i){
+  if(i<0 || i>=screens.length) return;
+  cur = i; visited.add(i);
+  screens.forEach((s,j)=>s.classList.toggle('active', j===i));
+  [...nav.children].forEach((b,j)=>{b.classList.toggle('active', j===i); b.classList.toggle('done', visited.has(j));});
+  nav.children[i].scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});
+  document.getElementById('progbar').style.width = ((i+1)/screens.length*100)+'%';
+  document.getElementById('stepname').textContent = 'Mission ' + (i+1) + ' of ' + screens.length + ' · ' + screens[i].dataset.name;
+  document.getElementById('prevBtn').disabled = i===0;
+  document.getElementById('nextBtn').disabled = i===screens.length-1;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ---------- 1. raise your hand ---------- */
+const hands = [
+  "…you play online games with people you have never met",
+  "…you have ever seen a message saying “You WON a prize!”",
+  "…you know someone whose game or social account got hacked",
+  "…you have seen a video online and later found out it was fake"
+];
+document.getElementById('hands').innerHTML = hands.map((h,i)=>
+  `<div class="hand"><span>✋ ${h}</span><span><span class="count" id="hc${i}">0</span> <button onclick="hc(${i})">+1</button></span></div>`).join('');
+function hc(i){const e=document.getElementById('hc'+i); e.textContent = +e.textContent + 1;}
+
+/* ---------- 2. threats ---------- */
+const threats = [
+  {i:"🎣",t:"Phishing",s:"Fake messages that “fish” for your info",
+   w:"Emails, SMS or chats pretending to be your school, a bank, a delivery company or a game — trying to make you click a link or type your password.",
+   f:"Spelling mistakes, “URGENT!”, strange links, asking for passwords or codes.",
+   d:"Don't click. Open the real app or website yourself. Show an adult."},
+  {i:"🎮",t:"Free Game Prize Scams",s:"“Free coins! Free skins! Free gems!”",
+   w:"Websites and videos promise free in-game money if you log in or download something. Instead, they steal your whole game account.",
+   f:"Anything FREE that asks for your login, password or a parent's card.",
+   d:"Only buy or earn items inside the official game. If it's too good to be true — it's a trap."},
+  {i:"😠",t:"Cyberbullying",s:"Hurting someone using screens",
+   w:"Mean comments, embarrassing photos shared in group chats, leaving someone out on purpose, fake accounts that make fun of someone.",
+   f:"If it would hurt you, it hurts them. Laughing emojis also count as joining in.",
+   d:"Don't forward. Support the person. Screenshot, report and tell a teacher."},
+  {i:"🕵️",t:"Fake Friends Online",s:"Not everyone is who they say they are",
+   w:"An adult can pretend to be a 12-year-old gamer. They give gifts, compliments, then ask for photos, secrets or to move to a private app. Some later threaten to share your photos unless you do what they say.",
+   f:"“Keep this our secret”, “send a photo”, “let's chat on another app”, gifts or coins.",
+   d:"Never send photos or meet up. Never pay or obey threats — tell a trusted adult immediately. It is NEVER your fault."},
+  {i:"🤖",t:"Deepfakes & AI Voice Clones",s:"Fake videos and voices made by AI",
+   w:"AI can copy a famous person's face or even your mum's voice. Scammers use fake videos of celebrities and cloned voices of family members asking for money or codes.",
+   f:"Shocking video, “send money now”, voice note from an unknown number asking for urgent help.",
+   d:"Pause and check. Call the real person on their saved number. Create a family secret code word."},
+  {i:"🔓",t:"Account Hacking",s:"Someone breaks into your account",
+   w:"Weak passwords like “123456” or your name can be guessed in seconds. Sharing a password with a friend is also a big risk.",
+   f:"Being logged out, strange messages sent from your account, password changed.",
+   d:"Strong passphrase, different for each account, 2-step verification ON. Never share OTP codes."},
+  {i:"🦠",t:"Fake Apps & Malware",s:"Downloads that hide viruses",
+   w:"“Modded” games, free movie apps and cracked software from unknown websites can secretly install viruses that spy on you or lock your device.",
+   f:"Download from outside the official app store, pop-ups saying “Your phone has a virus!”.",
+   d:"Only use official app stores, with a parent's permission. Close scary pop-ups — never tap them."},
+  {i:"👣",t:"Oversharing & Digital Footprint",s:"What you post stays online",
+   w:"Your school uniform, home location, live location or “we're on holiday for 2 weeks!” tells strangers where you are and when your home is empty.",
+   f:"Location tags, uniform in photos, full birthday, phone number in bio.",
+   d:"Keep accounts private, turn off location, think before you post (T.H.I.N.K.)."},
+  {i:"📷",t:"QR Code Scams",s:"Fake codes stuck on posters",
+   w:"Scammers stick fake QR codes on posters, parking machines or flyers. Scanning opens a fake website that steals payment or login details.",
+   f:"Sticker on top of another code, “scan for a free gift”, a page asking for card details.",
+   d:"Ask an adult before scanning. Check the website address before typing anything."}
+];
+const opened = new Set();
+document.getElementById('threats').innerHTML = threats.map((t,i)=>`
+  <button class="tcard" onclick="flip(this,${i})">
+    <div class="front"><div class="ico">${t.i}</div><h3>${t.t}</h3><p>${t.s}</p><span class="tapme">👆 Tap to reveal</span></div>
+    <div class="back"><h3>${t.i} ${t.t}</h3>
+      <p><b>What happens:</b> ${t.w}</p>
+      <p><b>🚩 Red flags:</b> ${t.f}</p>
+      <p class="shield"><b style="color:var(--green)">🛡️ Shield move:</b> ${t.d}</p></div>
+  </button>`).join('');
+function flip(el,i){
+  el.classList.toggle('open');
+  if(!opened.has(i)){opened.add(i); addPts(2,'+2 ⭐ Threat scanned!');
+    document.getElementById('tcount').textContent = 'Threats explored: '+opened.size+' / '+threats.length;}
+}
+
+/* ---------- 3. spot the phish ---------- */
+const phishCases = [
+  {html:`<div class="msgbox" id="msg">
+      <div class="meta"><b>From:</b> <span class="flag" data-id="0">GameZone Rewards &lt;rewards@gamezone-free-gift-claim.xyz&gt;</span><br>
+      <b>Subject:</b> <span class="flag" data-id="1">🎁 YOU WON 10,000 FREE GEMS!!! 🎁</span></div>
+      <p><span class="flag" data-id="2">Dear Player,</span></p>
+      <p><span class="flag" data-id="3">Congratulation! You has been selected</span> as our lucky winner of 10,000 gems and a rare golden skin!</p>
+      <p><span class="flag" data-id="4">Claim in 30 MINUTES or your account will be DELETED forever!</span></p>
+      <p>Click here 👉 <span class="flag" data-id="5" style="color:#1a56db;text-decoration:underline">www.gamez0ne-login.net/claim</span></p>
+      <p><span class="flag" data-id="6">To verify, enter your username, password and your parent's card number.</span></p>
+      <p>Thank you,<br>GameZone Team</p></div>`,
+   tips:["Weird sender address — a real company would not use “free-gift-claim.xyz”.",
+         "Too good to be true! Huge FREE prizes are the most common bait.",
+         "Generic greeting — they don't even know your name.",
+         "Spelling and grammar mistakes — real companies check their messages.",
+         "Pressure and fear — scammers rush you so you don't think.",
+         "Fake link — “gamez0ne” uses a ZERO instead of the letter O.",
+         "Asking for password and card details — real companies NEVER ask this."]},
+  {html:`<div class="msgbox chat" id="msg">
+      <div class="chathead">📱 +971 5X XXX XXXX (not in your contacts)</div>
+      <div class="bubble"><span class="flag" data-id="0">Hi!! It's me, your cousin Aisha 😊 This is my new number</span></div>
+      <div class="bubble"><span class="flag" data-id="1">I accidentally sent a 6-digit code to your phone. Can you send it to me please?</span></div>
+      <div class="bubble"><span class="flag" data-id="2">Quick quick, I need it in 2 minutes!!</span></div>
+      <div class="bubble"><span class="flag" data-id="3">Don't tell your mum, she'll get angry 🙈</span></div>
+      <div class="bubble"><span class="flag" data-id="4">If you don't help I'll be in big trouble. I thought you were my favourite cousin 😢</span></div>
+    </div>`,
+   tips:["Unknown number claiming to be someone you know — check by calling their OLD saved number.",
+         "Asking for a code (OTP) — that code is a KEY to your account. Never share it with anyone.",
+         "Rushing you — pressure is a classic scam trick.",
+         "Asking you to keep a secret from parents — the BIGGEST red flag of all.",
+         "Guilt and emotional pressure — a real family member would understand if you check first."]}
+];
+let pcase = 0; const pfound = [new Set(), new Set()];
+function showPhish(i){
+  pcase = i;
+  document.getElementById('tab1').className = 'btn' + (i===0?'':' ghost');
+  document.getElementById('tab2').className = 'btn' + (i===1?'':' ghost');
+  document.getElementById('phishBox').innerHTML = phishCases[i].html;
+  document.querySelectorAll('#msg .flag').forEach(f=>{
+    if(pfound[i].has(+f.dataset.id)) f.classList.add('found');
+    f.addEventListener('click',e=>{e.stopPropagation(); findFlag(+f.dataset.id, true);});
+  });
+  document.getElementById('msg').addEventListener('click',()=>toast('🔍 Keep looking…'));
+  renderFound();
+}
+function findFlag(id, award){
+  if(pfound[pcase].has(id)) return;
+  pfound[pcase].add(id);
+  document.querySelector('#msg .flag[data-id="'+id+'"]').classList.add('found');
+  if(award) addPts(5,'🚩 Red flag found! +5 ⭐');
+  renderFound();
+  if(award && pfound[pcase].size===phishCases[pcase].tips.length) setTimeout(()=>toast('🏆 All red flags found!'),1500);
+}
+function renderFound(){
+  const c = phishCases[pcase];
+  document.getElementById('flagCount').textContent = '🚩 Red flags found: '+pfound[pcase].size+' / '+c.tips.length;
+  document.getElementById('foundList').innerHTML = [...pfound[pcase]].sort((a,b)=>a-b).map(id=>`<li>${c.tips[id]}</li>`).join('') || '<li style="border-color:var(--line)">Tap suspicious words in the message…</li>';
+}
+function revealAll(){ phishCases[pcase].tips.forEach((_,id)=>findFlag(id,false)); }
+showPhish(0);
+
+/* ---------- 4. password lab ---------- */
+const common = ["123456","password","qwerty","111111","abc123","iloveyou","admin","welcome","football","cricket","minecraft","roblox","fortnite","letmein","dragon","monkey","sunshine","princess","12345678","123456789","000000"];
+document.getElementById('pw').addEventListener('input', e=>{
+  const v = e.target.value, low = v.toLowerCase();
+  const c = {
+    len: v.length>=12, up:/[A-Z]/.test(v), low:/[a-z]/.test(v), num:/[0-9]/.test(v), sym:/[^A-Za-z0-9]/.test(v),
+    common: v.length>0 && !common.some(w=>low.includes(w)) && !/(.)\1\1/.test(v) && !/(123|234|345|456|abc|qwe)/i.test(v)
+  };
+  document.querySelectorAll('#checks li').forEach(li=>li.classList.toggle('ok', !!c[li.dataset.k]));
+  let set = (c.low?26:0)+(c.up?26:0)+(c.num?10:0)+(c.sym?33:0);
+  let secs = v.length ? Math.pow(set||1, v.length)/2/1e10 : 0;
+  if(!c.common && v.length) secs = Math.min(secs, 0.5);
+  const score = Object.values(c).filter(Boolean).length;
+  const bar = document.getElementById('meterbar');
+  bar.style.width = v.length ? Math.max(10, score/6*100)+'%' : '0';
+  bar.style.background = score<=2?'var(--red)':score<=4?'var(--orange)':'var(--green)';
+  document.getElementById('crack').textContent = v.length ? fmt(secs) : '—';
+  document.getElementById('crack').style.color = secs<86400?'var(--red)':secs<3.15e9?'var(--orange)':'var(--green)';
+});
+function fmt(s){
+  if(s<1) return 'Instantly 😱';
+  const u=[[3.15e7*1e6,'million years'],[3.15e7*1e3,'thousand years'],[3.15e7,'years'],[86400,'days'],[3600,'hours'],[60,'minutes'],[1,'seconds']];
+  if(s>3.15e7*1e9) return 'Billions of years 🏆';
+  for(const [d,n] of u) if(s>=d) return Math.round(s/d).toLocaleString()+' '+n+(d>=3.15e7?' 🛡️':'');
+}
+const W = {a:["Purple","Sneaky","Giant","Dancing","Sleepy","Rocket","Funky","Tiny","Brave","Fluffy"],
+  n:["Tiger","Penguin","Camel","Robot","Falcon","Pizza","Dragon","Turtle","Wizard","Banana"],
+  v:["Eats","Juggles","Paints","Kicks","Hugs","Bakes","Chases","Builds"],
+  o:["Mangoes","Clouds","Donuts","Rainbows","Pyramids","Lasers","Noodles","Comets"]};
+const pick = a=>a[Math.floor(Math.random()*a.length)];
+function makePhrase(){
+  const p = [pick(W.a),pick(W.n),pick(W.v),Math.floor(10+Math.random()*89),pick(W.o)].join('-')+pick(['!','@','#','$','?']);
+  document.getElementById('phrase').textContent = p;
+}
+
+/* ---------- 5. scenario quiz ---------- */
+const Q = [
+  {e:"🎮",s:"You're playing an online game. A player messages: “I can give you 5,000 free coins! Just tell me your username and password so I can add them.”",
+   o:[["Share your login — free coins are awesome!","bad","This is the #1 way kids lose their game accounts. Once they have your password, they change it and your account is gone forever."],
+      ["Say no, block and report the player, and tell a parent.","best","Perfect! Real games never need your password to give you anything. Block + report keeps others safe too."],
+      ["Ask them to prove it first by sending 100 coins.","okay","Better than sharing, but you're still talking to a scammer. They may send a little to trick you into trusting them. Just block and report."],
+      ["Give your username only, but not the password.","okay","Safer, but still unnecessary. Scammers can use your username to send fake ‘reset’ messages. Don't engage."]]},
+  {e:"💬",s:"You get a WhatsApp from a new number: “Hey it's me, your best friend! New phone. I sent a code to your phone by mistake, please send it to me.”",
+   o:[["Send the code — it's your best friend!","bad","That code is a key to YOUR account. Scammers use this trick to take over WhatsApp, game and social accounts."],
+      ["Reply: ‘What's the name of our class teacher?’ to test them.","okay","Smart thinking, but scammers may already know details from your profile. The safest move is to not share the code at all."],
+      ["Don't send the code. Call your friend on their old saved number, and tell a parent.","best","Excellent! A code (OTP) should NEVER be shared — not even with friends. Checking on a saved number exposes the scam."],
+      ["Ignore it and delete the chat.","okay","Not sharing is good, but report and block the number, and tell an adult so your family is warned too."]]},
+  {e:"😢",s:"In your class group chat, someone shares an edited funny photo of a classmate. Everyone is sending 😂 emojis.",
+   o:[["Send a 😂 too — everyone else is.","bad","Joining in, even with an emoji, makes the bullying bigger. Imagine if it was your photo."],
+      ["Stay silent and do nothing.","okay","At least you didn't join in — but silence can feel like agreement. Bystanders have the power to stop bullying."],
+      ["Forward it to your other friends to ask what they think.","bad","Forwarding spreads the hurt further. Once shared, a photo can't be taken back."],
+      ["Don't laugh or share. Message the classmate kindly, screenshot it and tell a teacher.","best","You're an UPSTANDER! Supporting the person and telling an adult can stop the bullying."]]},
+  {e:"🕵️",s:"You've been chatting with a gamer who says they are 12. They're really nice and send you gifts. Now they ask you to video call privately and say “Don't tell your parents, they won't understand.”",
+   o:[["It's okay — they're my friend and they're 12.","bad","You can't be sure who someone really is online. Gifts + secrets + private calls are classic warning signs of a dangerous adult."],
+      ["Stop chatting, block, screenshot, and tell a parent or teacher right away.","best","Exactly right. Any request to keep secrets from your parents is the biggest red flag. You will NOT be in trouble for telling."],
+      ["Do the call but keep your camera off.","bad","Still risky. They may pressure you more during the call. Don't continue the conversation."],
+      ["Ask them to promise they really are 12.","okay","A liar will just say yes. Promises online prove nothing — tell a trusted adult."]]},
+  {e:"🎬",s:"You see a video of a famous cricketer saying: “I'm giving away free iPhones! Click the link and enter your parent's card details for delivery.”",
+   o:[["Click quickly before the iPhones run out!","bad","This is likely a deepfake — AI can copy faces and voices. Free gifts asking for card details are always scams."],
+      ["Share it with friends so they can win too.","bad","Sharing spreads the scam to more people. Check first, share never."],
+      ["Don't click. It could be an AI deepfake. Check the star's official account and show an adult.","best","Smart agent! Always check the official source. Shocking or ‘too good to be true’ videos are often fake."],
+      ["Comment ‘Is this real?’ under the video.","okay","Good that you're doubtful — but don't interact. Scammers may reply and convince you."]]},
+  {e:"⚠️",s:"While watching a video, a big flashing pop-up says: “WARNING! Your phone has 3 viruses! Tap here to clean NOW!”",
+   o:[["Tap it — I need to remove the viruses!","bad","These fake warnings are how viruses actually GET onto your device. Real antivirus doesn't flash on websites."],
+      ["Close the page or app, don't tap the pop-up, and tell a parent.","best","Correct! Fake pop-ups use fear. Close the tab and let an adult check the device if you're worried."],
+      ["Download the app it recommends.","bad","That ‘cleaner’ app is often the malware itself."],
+      ["Restart the phone.","okay","Not harmful, but tell an adult so they can check settings and installed apps."]]},
+  {e:"📥",s:"Your friend says you can get a “modded” version of a popular paid game for FREE from a website — with unlimited coins!",
+   o:[["Download it — free and unlimited coins!","bad","Modded and cracked apps from unknown websites often hide viruses that steal passwords or photos. Your account may also be banned."],
+      ["Ask a parent and only download from the official app store.","best","Great choice! Official stores check apps for safety. Free ‘hacks’ usually cost you more in the end."],
+      ["Download it on a family member's phone instead.","bad","That just puts their device and their bank apps at risk."],
+      ["Check the reviews on that website first.","okay","Scam websites often post fake reviews. Stick to official app stores."]]},
+  {e:"✈️",s:"You're excited about your holiday! You want to post: “At the airport! Whole family away for 2 weeks 🌴” with your location tagged.",
+   o:[["Post it now with the location!","bad","You've just told the whole internet your home is empty for 2 weeks — and where you are."],
+      ["Post it but remove the location tag.","okay","Better — but you're still announcing that your home is empty. Wait until you're back."],
+      ["Enjoy the trip and post the photos after you're home, with location off.","best","Smart! Posting later protects your home and family. Your memories don't expire."],
+      ["Post it only on your ‘close friends’ story.","okay","Safer, but friends can screenshot and share. Posting later is the best habit."]]},
+  {e:"📱",s:"For a week, an anonymous account keeps sending you mean messages saying nobody likes you.",
+   o:[["Send mean messages back so they stop.","bad","Fighting back usually makes it worse — and could get you into trouble too."],
+      ["Keep it to yourself; it's embarrassing.","bad","You don't have to handle this alone. Bullies want you to stay silent. It's not your fault."],
+      ["Don't reply. Screenshot, block, report, and tell a trusted adult.","best","Brave and smart! S.B.S.T. — Stop, Block, Screenshot, Tell. Adults can help get the account removed."],
+      ["Delete your account.","okay","Taking a break can help, but you deserve support. Tell an adult so the bully is stopped."]]},
+  {e:"🤝",s:"Your best friend asks for your game password so they can “help you level up” while you're at tuition.",
+   o:[["Sure, they're my best friend!","okay","Friends can be trustworthy — but friendships change, and passwords can get shared further. Keep passwords private."],
+      ["Politely say no — passwords are only for you and your parents.","best","A true friend will understand. Password secret = account safe."],
+      ["Give it, then change it later.","okay","Risky in between — they could change it first or share it. Better not to share at all."],
+      ["Write it on a paper and give it to them.","bad","Paper passwords can be lost, copied or seen by others."]]},
+  {e:"🎙️",s:"You get a voice note from an unknown number. It sounds exactly like your mum: “I lost my phone! Read me the code that just came to your phone, hurry!”",
+   o:[["Send the code — it's definitely Mum's voice!","bad","AI can now clone voices from a few seconds of video. This is a real scam happening to families right now."],
+      ["Call Mum on her saved number, or ask your family's secret code word.","best","Brilliant! Always verify through a number you already trust. A family code word stops voice-clone scams."],
+      ["Ask the voice what your pet's name is.","okay","Good idea, but that info might be on social media. Calling the real number is safer."],
+      ["Forward the voice note to Dad.","okay","Telling a parent is good! Just don't send any codes in the meantime."]]},
+  {e:"😰",s:"Oops! You clicked a link and typed your game password on a website that now looks fake.",
+   o:[["Hide it and hope nothing happens.","bad","The faster you act, the more you can save. Hiding it gives the hacker time."],
+      ["Tell a parent right away, change your password, and turn on 2-step verification.","best","Perfect recovery! Everyone makes mistakes — fixing it fast is what a Cyber Guardian does."],
+      ["Delete the game app.","okay","Deleting the app doesn't lock out the hacker — the account still exists online. Change the password!"],
+      ["Click the link again to check.","bad","Going back might install something or capture more info. Close it and get help."]]}
+];
+let qi = 0, qScore = 0, qBest = 0;
+function renderQ(){
+  const box = document.getElementById('quizBox');
+  if(qi>=Q.length){
+    const rank = qBest>=10?["🏆","Cyber Guardian Legend"]:qBest>=7?["🛡️","Cyber Defender"]:["🌱","Cyber Rookie — keep training!"];
+    box.innerHTML = `<div class="result"><div class="big">${rank[0]}</div><h2>${rank[1]}</h2>
+      <p class="lead">You chose the BEST action in <b style="color:var(--yellow)">${qBest} of ${Q.length}</b> situations and earned ${qScore} ⭐ in this mission.</p>
+      <button class="btn ghost" onclick="qi=0;qScore=0;qBest=0;renderQ()">🔁 Play again</button>
+      <button class="btn" onclick="go(cur+1)">Next mission ➡</button></div>`;
+    return;
+  }
+  const q = Q[qi];
+  box.innerHTML = `<div class="qhead"><b>Scenario ${qi+1} of ${Q.length}</b><span>✅ Best choices: ${qBest}</span></div>
+    <div class="qbar"><div style="width:${qi/Q.length*100}%"></div></div>
+    <div class="scene"><span class="emo">${q.e}</span>${q.s}</div>
+    <div class="opts">${q.o.map((o,j)=>`<button class="opt" onclick="answer(${j})"><span class="letter">${'ABCD'[j]}</span><span>${o[0]}</span></button>`).join('')}</div>
+    <div class="feedback" id="fb"></div>`;
+}
+function answer(j){
+  const q = Q[qi], [_,type,why] = q.o[j];
+  const btns = document.querySelectorAll('.opt');
+  btns.forEach((b,k)=>{b.disabled = true; if(q.o[k][1]==='best') b.classList.add('best');});
+  btns[j].classList.add(type);
+  const label = type==='best'?'🌟 Best choice! +10 ⭐':type==='okay'?'🤔 Okay… but there\'s a safer choice. +3 ⭐':'🚨 Risky choice!';
+  if(type==='best'){qScore+=10;qBest++;addPts(10);} else if(type==='okay'){qScore+=3;addPts(3);}
+  const best = q.o.find(o=>o[1]==='best');
+  const fb = document.getElementById('fb');
+  fb.className = 'feedback show '+type;
+  fb.innerHTML = `<h3>${label}</h3><p>${why}</p>${type!=='best'?`<p><b style="color:var(--green)">🛡️ Best action:</b> ${best[0]}</p>`:''}
+    <button class="btn" onclick="qi++;renderQ()">${qi===Q.length-1?'See my result 🏁':'Next scenario ➡'}</button>`;
+  fb.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+renderQ();
+
+/* ---------- 6. share or shield ---------- */
+const S = [
+  ["🎨","Your favourite colour","share","Totally fine! Harmless fun facts are safe."],
+  ["🏠","Your home address","shield","Never! Strangers could find where you live."],
+  ["🔑","Your password","shield","Only you and your parents should ever know it."],
+  ["🏫","A photo in your school uniform","shield","The logo tells strangers which school you go to and where to find you."],
+  ["📚","Your favourite book","share","Safe to share — great for book chats!"],
+  ["📞","Your phone number","shield","Scammers and strangers can call, message or track you."],
+  ["🔢","An OTP code sent to your phone","shield","This code is a key to your account. Never share it — with anyone."],
+  ["📍","Your live location","shield","Strangers would know exactly where you are right now."],
+  ["🖍️","A drawing you made (without your name)","share","Show off your creativity — just keep personal details off it."],
+  ["🎂","Your full date of birth","shield","Used to guess passwords and steal identities. Share only first name and age with people you know."],
+  ["🐶","Your pet's name","shield","Tricky one! It's often used in passwords and security questions."],
+  ["🪪","A photo of your passport or Emirates ID","shield","Never! ID documents can be used to steal your identity."],
+  ["🚀","A cool fact you learned about space","share","Sharing knowledge is great!"],
+  ["🧳","“Our family is away next week!”","shield","Tells strangers your home will be empty. Post after you're back."]
+];
+let si = 0, sOk = 0; const placed = {share:[],shield:[]};
+function renderS(){
+  const box = document.getElementById('shareBox');
+  const bins = `<div class="bins"><div class="bin"><h4>✅ OK to share</h4>${placed.share.map(x=>`<span class="chipx">${x}</span>`).join('')}</div>
+    <div class="bin"><h4>🛡️ Keep private</h4>${placed.shield.map(x=>`<span class="chipx">${x}</span>`).join('')}</div></div>`;
+  if(si>=S.length){
+    box.innerHTML = `<div class="result"><div class="big">🎯</div><h2>${sOk} / ${S.length} correct!</h2>
+      <p class="lead">Golden rule: if it can help a stranger <b>find you, become you, or get into your accounts</b> — SHIELD IT!</p>
+      <button class="btn ghost" onclick="si=0;sOk=0;placed.share=[];placed.shield=[];renderS()">🔁 Play again</button></div>${bins}`;
+    return;
+  }
+  const [ico,t] = S[si];
+  box.innerHTML = `<p><b>Item ${si+1} of ${S.length}</b> · Correct: ${sOk}</p>
+    <div class="sitem"><span class="ico">${ico}</span>${t}</div>
+    <div class="sbtns"><button class="sharebtn" onclick="sAns('share')">✅ SHARE IT</button><button class="shieldbtn" onclick="sAns('shield')">🛡️ SHIELD IT</button></div>
+    <div class="feedback" id="sfb"></div>${bins}`;
+}
+function sAns(c){
+  const [ico,t,a,why] = S[si];
+  document.querySelectorAll('.sbtns button').forEach(b=>b.disabled=true);
+  const right = c===a;
+  if(right){sOk++; addPts(3);}
+  placed[a].push(ico+' '+t);
+  const fb = document.getElementById('sfb');
+  fb.className = 'feedback show '+(right?'best':'bad');
+  fb.innerHTML = `<h3>${right?'✅ Correct! +3 ⭐':'❌ Not quite!'}</h3><p><b>${a==='share'?'OK to share':'Keep private'}:</b> ${why}</p>
+    <button class="btn" onclick="si++;renderS()">Next ➡</button>`;
+}
+renderS();
+
+/* ---------- 7. pledge ---------- */
+const P = [
+  "I will keep my passwords and OTP codes secret — only my parents may know them.",
+  "I will think before I click on links, prizes, QR codes and pop-ups.",
+  "I will be kind online and be an UPSTANDER against cyberbullying.",
+  "I will not share personal information, photos or my location with strangers.",
+  "I will check before I believe or forward — videos and voices can be fake.",
+  "If something feels wrong, I will STOP, BLOCK, SCREENSHOT and TELL a trusted adult."
+];
+document.getElementById('pledgeList').innerHTML = P.map((p,i)=>`<label><input type="checkbox" class="pl"> <span>${p}</span></label>`).join('');
+let badgeDone = false;
+function makeBadge(){
+  const all = [...document.querySelectorAll('.pl')].every(c=>c.checked);
+  const name = document.getElementById('gname').value.trim();
+  const msg = document.getElementById('pledgeMsg');
+  if(!all){msg.textContent='☝️ Tick all six promises to unlock your badge.';return;}
+  if(!name){msg.textContent='☝️ Type your agent name first.';return;}
+  msg.textContent='';
+  if(!badgeDone){badgeDone=true; addPts(20,'🏅 Pledge complete! +20 ⭐');}
+  document.getElementById('bname').textContent = name;
+  document.getElementById('binfo').textContent = 'Earned '+pts+' Shield Points · '+new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  const b = document.getElementById('badge'); b.classList.remove('show'); void b.offsetWidth; b.classList.add('show');
+  b.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+go(0);
+</script>
+</body>
+</html>
